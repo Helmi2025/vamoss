@@ -1,0 +1,31 @@
+package com.example.demo.entities;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDateTime;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@Document(collection = "users")
+public class Captain extends User {
+
+    private String captainId;
+
+    // Reference to the team this captain manages
+    private String teamId;
+
+    // Date when the captain submitted the application
+    private LocalDateTime appliedAt;
+
+    // Base64-encoded photo avatar (stored inline in MongoDB)
+    private String photoUrl;
+
+    public Captain(String email, String passwordHash, String fullName, String phoneNumber) {
+        super(null, email, passwordHash, fullName, phoneNumber, Role.CAPTAIN, AccountStatus.PENDING_REVIEW);
+        this.appliedAt = LocalDateTime.now();
+    }
+}

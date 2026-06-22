@@ -1,0 +1,235 @@
+diff --git a/backend/src/main/java/com/example/demo/dto/StatsDtos.java b/backend/src/main/java/com/example/demo/dto/StatsDtos.java
+--- a/backend/src/main/java/com/example/demo/dto/StatsDtos.java
++++ b/backend/src/main/java/com/example/demo/dto/StatsDtos.java
+@@
+-    public static class TeamRankingDto {
+-        private String teamId;
+-        private String teamName;
++    public static class ParticipantRankingDto {
++        private String participantId;
++        private String participantName;
++        private String participantType;
++        private String sportId;
+         private String sportName;
+-        private String logoUrl;
++        private String avatarUrl;
+         private int tournamentsWonCount;
+         private int totalGoalsScored;
+     }
+diff --git a/backend/src/main/java/com/example/demo/controllers/StatsController.java b/backend/src/main/java/com/example/demo/controllers/StatsController.java
+--- a/backend/src/main/java/com/example/demo/controllers/StatsController.java
++++ b/backend/src/main/java/com/example/demo/controllers/StatsController.java
+@@
+     @GetMapping("/rankings")
+     @PreAuthorize("isAuthenticated()")
+-    public ResponseEntity<List<StatsDtos.TeamRankingDto>> getTeamRankings() {
+-        return ResponseEntity.ok(statsService.getTeamRankings());
++    public ResponseEntity<List<StatsDtos.ParticipantRankingDto>> getParticipantRankings() {
++        return ResponseEntity.ok(statsService.getParticipantRankings());
+     }
+ }
+diff --git a/backend/src/main/java/com/example/demo/services/StatsService.java b/backend/src/main/java/com/example/demo/services/StatsService.java
+--- a/backend/src/main/java/com/example/demo/services/StatsService.java
++++ b/backend/src/main/java/com/example/demo/services/StatsService.java
+@@
+     private final DoublesTeamRepository doublesTeamRepository;
+     private final TeamRepository teamRepository;
++    private final PlayerRepository playerRepository;
+     private final SportRepository sportRepository;
+@@
+-    public List<StatsDtos.TeamRankingDto> getTeamRankings() {
+-        List<Sport> sports = sportRepository.findBySportNameIn(List.of("Football", "Basketball"));
+-        List<String> sportIds = sports.stream().map(Sport::getId).collect(Collectors.toList());
++    public List<StatsDtos.ParticipantRankingDto> getParticipantRankings() {
++        List<Sport> sports = sportRepository.findBySportNameIn(List.of("Football", "Basketball", "Tennis", "Padel"));
++        List<String> teamSportIds = sports.stream()
++                .filter(s -> List.of("Football", "Basketball").contains(s.getSportName()))
++                .map(Sport::getId)
++                .collect(Collectors.toList());
++        List<String> individualSportIds = sports.stream()
++                .filter(s -> List.of("Tennis", "Padel").contains(s.getSportName()))
++                .map(Sport::getId)
++                .collect(Collectors.toList());
+ 
+         List<Team> teams = teamRepository.findAll().stream()
+-                .filter(t -> sportIds.contains(t.getSportId()))
++                .filter(t -> teamSportIds.contains(t.getSportId()))
+                 .collect(Collectors.toList());
+ 
+-        List<StatsDtos.TeamRankingDto> rankings = new ArrayList<>();
++        List<StatsDtos.ParticipantRankingDto> rankings = new ArrayList<>();
+         for (Team team : teams) {
+             int wonCount = (int) tournamentRepository.findAll().stream()
+@@
+-            rankings.add(new StatsDtos.TeamRankingDto(
++            rankings.add(new StatsDtos.ParticipantRankingDto(
+                     team.getId(),
+                     team.getTeamName(),
++                    ParticipantType.TEAM.name(),
++                    team.getSportId(),
+                     sName,
+                     logoUrl,
+                     wonCount,
+                     totalGoals
+             ));
+         }
++
++        List<Player> players = playerRepository.findAll().stream()
++                .filter(p -> p.getAccountStatus() == User.AccountStatus.ACTIVE)
++                .filter(p -> p.getSportId() != null && individualSportIds.contains(p.getSportId()))
++                .collect(Collectors.toList());
++
++        for (Player player : players) {
++            String playerId = player.getPlayerId() != null ? player.getPlayerId() : player.getUserId();
++            StatsDtos.ParticipantStatsDto stats = getPlayerStats(playerId);
++            String sName = sports.stream()
++                    .filter(s -> s.getId().equals(player.getSportId()))
++                    .map(Sport::getSportName)
++                    .findFirst()
++                    .orElse("Unknown");
++
++            rankings.add(new StatsDtos.ParticipantRankingDto(
++                    playerId,
++                    player.getFullName(),
++                    ParticipantType.PLAYER.name(),
++                    player.getSportId(),
++                    sName,
++                    player.getPhotoUrl(),
++                    stats.getTournamentsWonCount(),
++                    stats.getTotalGoalsScored()
++            ));
++        }
+ 
+         rankings.sort((a, b) -> {
+             if (a.getTournamentsWonCount() != b.getTournamentsWonCount()) {
+@@
+             if (a.getTotalGoalsScored() != b.getTotalGoalsScored()) {
+                 return Integer.compare(b.getTotalGoalsScored(), a.getTotalGoalsScored());
+             }
+-            return a.getTeamName().compareToIgnoreCase(b.getTeamName());
++            String aName = a.getParticipantName() != null ? a.getParticipantName() : "";
++            String bName = b.getParticipantName() != null ? b.getParticipantName() : "";
++            return aName.compareToIgnoreCase(bName);
+         });
+ 
+         return rankings;
+diff --git a/frontend/src/pages/dashboards/admin/AdminHomePage.jsx b/frontend/src/pages/dashboards/admin/AdminHomePage.jsx
+--- a/frontend/src/pages/dashboards/admin/AdminHomePage.jsx
++++ b/frontend/src/pages/dashboards/admin/AdminHomePage.jsx
+@@
+-function RankingsSection({ rankings }) {
+-  const sportNames = [...new Set(rankings.map(r => r.sportName))]
+-  const [activeSport, setActiveSport] = useState(sportNames[0] || '')
+-
+-  const filtered = rankings.filter(r => r.sportName === activeSport)
++function isIndividualRankingSport(sport) {
++  if (!sport) return false
++  const name = sport.sportName?.toLowerCase() || ''
++  return sport.teamEnabled === false || name.includes('tennis') || name.includes('padel')
++}
++
++function getRankingId(entry) {
++  return entry.participantId || entry.playerId || entry.teamId
++}
++
++function getRankingName(entry) {
++  return entry.participantName || entry.playerName || entry.teamName
++}
++
++function getRankingAvatar(entry) {
++  return entry.avatarUrl || entry.photoUrl || entry.logoUrl
++}
++
++function RankingsSection({ rankings, activeSport }) {
++  const filtered = rankings.filter(r => {
++    if (!activeSport) return false
++    if (r.sportId) return r.sportId === activeSport.id
++    return r.sportName === activeSport.sportName
++  })
++  const isIndividual = isIndividualRankingSport(activeSport)
++  const entityLabel = isIndividual ? 'player' : 'team'
++  const scoreLabel = isIndividual ? 'points' : 'goals'
+   const podium   = filtered.slice(0, 3)
+   const rest     = filtered.slice(3)
+@@
+     <div className="hp-rankings-section">
+       <div className="hp-rankings-header">
+         <span className="hp-rankings-title">🏆 League Rankings</span>
+-        {sportNames.length > 1 && (
+-          <div className="hp-rankings-tabs">
+-            {sportNames.map(s => (
+-              <button
+-                key={s}
+-                className={`hp-rankings-tab${activeSport === s ? ' active' : ''}`}
+-                onClick={() => setActiveSport(s)}
+-              >
+-                {s.toLowerCase().includes('foot')
+-                  ? <img src={footLogo} alt="Football" style={{ width: 16, height: 16, objectFit: 'contain', marginRight: 6 }} />
+-                  : <img src={basketLogo} alt="Basketball" style={{ width: 16, height: 16, objectFit: 'contain', marginRight: 6 }} />
+-                }
+-                {s}
+-              </button>
+-            ))}
+-          </div>
+-        )}
+       </div>
+ 
+       {filtered.length === 0 ? (
+         <div className="hp-rankings-empty">
+           <span style={{ fontSize: 36, opacity: 0.2 }}>🏆</span>
+-          <p>No team data yet for {activeSport}.</p>
++          <p>No {entityLabel} data yet for {activeSport?.sportName || 'this sport'}.</p>
+         </div>
+       ) : (
+@@
+-            {podiumOrder.map((team, visualIdx) => {
++            {podiumOrder.map((entry, visualIdx) => {
+               const rank    = podiumRanks[visualIdx]
+               const rankIdx = rank - 1
+               const medal   = MEDAL_COLORS[rankIdx]
+               const barH    = podiumHeights[visualIdx]
++              const name    = getRankingName(entry)
+               return (
+-                <div key={team.teamId} className="hp-podium-col">
++                <div key={getRankingId(entry)} className="hp-podium-col">
+@@
+-                      <TeamAvatar logoUrl={team.logoUrl} name={team.teamName} size={52} />
++                      <TeamAvatar logoUrl={getRankingAvatar(entry)} name={name} size={52} />
+@@
+-                    <p className="hp-podium-name">{team.teamName}</p>
++                    <p className="hp-podium-name">{name}</p>
+                     <p className="hp-podium-wins" style={{ color: medal.text }}>
+-                      {team.tournamentsWonCount} {team.tournamentsWonCount === 1 ? 'Title' : 'Titles'}
++                      {entry.tournamentsWonCount} {entry.tournamentsWonCount === 1 ? 'Title' : 'Titles'}
+                     </p>
+-                    <p className="hp-podium-goals">{team.totalGoalsScored} goals</p>
++                    <p className="hp-podium-goals">{entry.totalGoalsScored} {scoreLabel}</p>
+                   </div>
+@@
+-              {rest.map((team, idx) => {
++              {rest.map((entry, idx) => {
+                 const rank = idx + 4
++                const name = getRankingName(entry)
+                 return (
+-                  <div key={team.teamId} className="hp-rank-row">
++                  <div key={getRankingId(entry)} className="hp-rank-row">
+                     <span className="hp-rank-pos">{rank}</span>
+-                    <TeamAvatar logoUrl={team.logoUrl} name={team.teamName} size={32} />
+-                    <span className="hp-rank-name">{team.teamName}</span>
++                    <TeamAvatar logoUrl={getRankingAvatar(entry)} name={name} size={32} />
++                    <span className="hp-rank-name">{name}</span>
+                     <span className="hp-rank-stat">
+-                      <span className="hp-rank-stat-val">{team.tournamentsWonCount}</span>
++                      <span className="hp-rank-stat-val">{entry.tournamentsWonCount}</span>
+                       <span className="hp-rank-stat-lbl">titles</span>
+                     </span>
+                     <span className="hp-rank-stat">
+-                      <span className="hp-rank-stat-val">{team.totalGoalsScored}</span>
+-                      <span className="hp-rank-stat-lbl">goals</span>
++                      <span className="hp-rank-stat-val">{entry.totalGoalsScored}</span>
++                      <span className="hp-rank-stat-lbl">{scoreLabel}</span>
+                     </span>
+@@
+-        <RankingsSection rankings={rankings} />
++        <RankingsSection rankings={rankings} activeSport={activeSportObj} />
+       ) : null}

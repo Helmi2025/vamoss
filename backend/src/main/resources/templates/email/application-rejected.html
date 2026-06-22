@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Application Update – VAMOS SPORT</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #6b6b6b;
+    }
+    .wrapper {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .header {
+      background-color: #000000;
+      padding: 32px 40px;
+      text-align: center;
+    }
+    .header img { max-width: 140px; height: auto; }
+    .divider {
+      height: 4px;
+      background: linear-gradient(90deg, #c6a84b, #f0d080, #c6a84b);
+    }
+    .body { padding: 40px; }
+    .body h1 { color: #000000; font-size: 22px; margin-bottom: 16px; }
+    .body p {
+      font-size: 15px;
+      line-height: 1.7;
+      color: #6b6b6b;
+      margin-bottom: 14px;
+    }
+    /* ── X icon ── */
+    .icon-wrapper {
+      text-align: center;
+      margin: 24px 0;
+    }
+    .x-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: #f5f5f5;
+      border: 3px solid #c6a84b;
+      font-size: 32px;
+      color: #c6a84b;
+    }
+    /* ── Info card ── */
+    .card {
+      background: #f9f9f9;
+      border-left: 4px solid #c6a84b;
+      border-radius: 4px;
+      padding: 20px 24px;
+      margin: 24px 0;
+    }
+    .card p { margin-bottom: 8px; font-size: 14px; }
+    .card p:last-child { margin-bottom: 0; }
+    .card strong { color: #000000; }
+    /* ── Reason box ── */
+    .reason-box {
+      background: #fff8e7;
+      border: 1px solid #c6a84b;
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin: 16px 0 24px;
+      font-size: 14px;
+      color: #5a4a1a;
+      line-height: 1.6;
+    }
+    .badge-inactive {
+      display: inline-block;
+      background-color: #fce4e4;
+      color: #c62828;
+      border: 1px solid #e57373;
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .footer {
+      background-color: #000000;
+      padding: 24px 40px;
+      text-align: center;
+    }
+    .footer p { color: #6b6b6b; font-size: 12px; line-height: 1.6; }
+    .footer a { color: #c6a84b; text-decoration: none; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <img th:src="${logoUrl}" src="" alt="VAMOS SPORT" style="max-width:140px; height:auto;"/>
+  </div>
+  <div class="divider"></div>
+
+  <!-- Body -->
+  <div class="body">
+    <h1 style="text-align:center;">Application Update</h1>
+
+    <p>Hello <strong th:text="${captainName}">Captain</strong>,</p>
+
+    <p>
+      Thank you for your interest in joining <strong>VAMOS SPORT</strong> as a team captain.
+      After careful review, we regret to inform you that your application has not been
+      approved at this time.
+    </p>
+
+    <div class="card">
+      <p><strong>Name:</strong> <span th:text="${captainName}">–</span></p>
+      <p><strong>Email:</strong> <span th:text="${email}">–</span></p>
+      <p><strong>Team:</strong> <span th:text="${teamName}">–</span></p>
+      <p><strong>Sport:</strong> <span th:text="${sportName}">–</span></p>
+      <p><strong>Status:</strong> &nbsp;<span class="badge-inactive">✕ Not Approved</span></p>
+    </div>
+
+    <!-- Optional reason block — shown only if reason is provided -->
+    <div th:if="${reason != null and !#strings.isEmpty(reason)}">
+      <p><strong>Reason provided by the administration:</strong></p>
+      <div class="reason-box" th:text="${reason}">–</div>
+    </div>
+
+    <p>
+      We understand this may be disappointing. If you believe there has been an error
+      or if you would like more information about this decision, please do not hesitate
+      to contact us at
+      <a href="mailto:vamossportsfax@gmail.com" style="color:#c6a84b;">vamossportsfax@gmail.com</a>.
+    </p>
+
+    <p>
+      You are welcome to reapply in the future once any outstanding issues have been resolved.
+      We appreciate your interest in VAMOS SPORT and wish you all the best.
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>© 2025 VAMOS SPORT. All rights reserved.</p>
+    <p>You received this email because you submitted a captain application.</p>
+  </div>
+
+</div>
+</body>
+</html>

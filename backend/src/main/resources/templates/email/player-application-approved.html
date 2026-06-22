@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Application Approved</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; background: #f9f9f9; }
+        .container { max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); padding: 30px; text-align: center; }
+        .logo { max-width: 120px; }
+        .content { padding: 30px; color: #333; }
+        .content h1 { color: #28a745; font-size: 24px; margin: 0 0 16px; }
+        .content p { line-height: 1.6; margin: 12px 0; }
+        .info-box { background: #f0fdf4; border-left: 4px solid #28a745; padding: 16px; margin: 20px 0; }
+        .button { display: inline-block; background: #d4af37; color: #ffffff; text-decoration: none; padding: 12px 28px; border-radius: 6px; margin: 16px 0; font-weight: bold; }
+        .footer { background: #f1f1f1; padding: 20px; text-align: center; font-size: 12px; color: #777; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img th:src="${logoUrl}" alt="VAMOS SPORT Logo" class="logo" />
+        </div>
+        <div class="content">
+            <h1>🎉 Congratulations!</h1>
+            <p>Dear <strong th:text="${playerName}">Player</strong>,</p>
+            <p>We are excited to inform you that your player application for <strong th:text="${sportName}">Sport</strong> has been <strong>approved</strong>!</p>
+
+            <div class="info-box">
+                <p><strong>Email:</strong> <span th:text="${email}"></span></p>
+                <p><strong>Sport:</strong> <span th:text="${sportName}"></span></p>
+            </div>
+
+            <p>You can now log in to your account and start enjoying the platform.</p>
+            <p style="text-align: center;">
+                <a th:href="${loginUrl}" class="button">Log In Now</a>
+            </p>
+            <p>If you have any questions, feel free to reach out to us at <a href="mailto:vamossportsfax@gmail.com" style="color: #d4af37;">vamossportsfax@gmail.com</a></p>
+        </div>
+        <div class="footer">
+            &copy; 2025 VAMOS SPORT. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+package com.example.demo.entities;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@Document(collection = "users")
+public class Player extends User {
+
+    private String playerId;
+
+    // Reference to the team the player belongs to
+    private String teamId;
+
+    // Reference to the captain managing this player
+    private String captainId;
+
+    private String position;
+
+    private int jerseyNumber;
+
+    public Player(String email, String passwordHash, String fullName, String phoneNumber) {
+        super();
+    }
+}

@@ -1,0 +1,1221 @@
+/* ── LAYOUT ── */
+.admin-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: #0a0a0a;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.admin-main {
+  flex: 1;
+  padding: 36px 40px;
+  overflow-y: auto;
+  min-width: 0;
+}
+
+/* ── SIDEBAR ── */
+.admin-sidebar {
+  width: 260px;
+  height: 100vh;
+  background: #000;
+  border-right: 1px solid rgba(198,168,75,0.15);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+}
+
+.admin-sidebar.closed {
+  width: 64px;
+}
+
+/* Toggle button */
+.sidebar-toggle {
+  position: absolute;
+  top: 18px;
+  right: -14px;
+  z-index: 10;
+  width: 28px;
+  height: 28px;
+  background: #c6a84b;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #000;
+  font-size: 0.75rem;
+  box-shadow: 0 2px 12px rgba(198,168,75,0.3);
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.sidebar-toggle:hover { background: #d4b558; }
+
+/* Brand */
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 18px 24px;
+  border-bottom: 1px solid rgba(198,168,75,0.1);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sidebar-logo {
+  height: 36px;
+  width: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.sidebar-brand-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.sidebar-brand-text span { color: #c6a84b; }
+
+/* Nav */
+.sidebar-nav {
+  flex: 1;
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 12px 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  position: relative;
+  text-align: left;
+  width: 100%;
+}
+
+.sidebar-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: #c6a84b;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.sidebar-item:hover {
+  color: #fff;
+  background: rgba(198,168,75,0.05);
+}
+
+.sidebar-item.active {
+  color: #c6a84b;
+  background: rgba(198,168,75,0.08);
+}
+
+.sidebar-item.active::before { opacity: 1; }
+
+.sidebar-item-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-item-label {
+  transition: opacity 0.2s ease;
+  flex: 1;
+}
+
+.sidebar-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: #c6a84b;
+  color: #0a0a0a;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease;
+}
+
+.admin-sidebar.closed .sidebar-badge {
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.admin-sidebar.closed .sidebar-item-label,
+.admin-sidebar.closed .sidebar-brand-text {
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+}
+
+/* Sidebar footer */
+.sidebar-footer {
+  padding: 16px 18px;
+  border-top: 1px solid rgba(198,168,75,0.1);
+}
+
+.sidebar-logout {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  padding: 10px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #555;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: color 0.2s ease;
+}
+
+.sidebar-logout:hover { color: #e07070; }
+
+.admin-sidebar.closed .sidebar-logout span { opacity: 0; width: 0; overflow: hidden; }
+
+/* ── PAGE HEADER ── */
+.page-header {
+  margin-bottom: 32px;
+}
+
+.page-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.page-subtitle {
+  font-size: 0.82rem;
+  color: #555;
+}
+
+/* ── CARDS / CONTENT BOXES ── */
+.content-card {
+  background: #111;
+  border: 1px solid rgba(198,168,75,0.12);
+  border-radius: 4px;
+  padding: 28px;
+}
+
+/* ── BUTTONS (shared) ── */
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 24px;
+  background: #c6a84b;
+  border: 1px solid #c6a84b;
+  border-radius: 2px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #000;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-gold:hover:not(:disabled) {
+  background: #d4b558;
+  box-shadow: 0 0 20px rgba(198,168,75,0.3);
+}
+
+.btn-gold:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-outline-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 20px;
+  background: transparent;
+  border: 1px solid rgba(198,168,75,0.35);
+  border-radius: 2px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #c6a84b;
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.btn-outline-gold:hover { background: rgba(198,168,75,0.08); border-color: #c6a84b; }
+
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 20px;
+  background: transparent;
+  border: 1px solid rgba(220,53,69,0.35);
+  border-radius: 2px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #e07070;
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.btn-danger:hover { background: rgba(220,53,69,0.08); border-color: #e07070; }
+
+/* ── MODAL OVERLAY ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9000;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal-box {
+  background: #111;
+  border: 1px solid rgba(198,168,75,0.2);
+  border-radius: 4px;
+  padding: 32px;
+  width: 100%;
+  max-width: 520px;
+  animation: slideUp 0.25s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-box.sm { max-width: 380px; }
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 12px;
+}
+
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #555;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  transition: color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.modal-close:hover { color: #c6a84b; }
+
+/* ── FORM FIELDS ── */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 18px;
+}
+
+.form-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #777;
+}
+
+.form-input,
+.form-textarea {
+  background: #0a0a0a;
+  border: 1px solid rgba(198,168,75,0.15);
+  border-radius: 2px;
+  padding: 11px 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.22s ease, box-shadow 0.22s ease;
+  width: 100%;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder { color: #444; }
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: rgba(198,168,75,0.5);
+  box-shadow: 0 0 0 3px rgba(198,168,75,0.06);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* File upload zone */
+.file-upload-zone {
+  border: 1.5px dashed rgba(198,168,75,0.25);
+  border-radius: 3px;
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  position: relative;
+  background: #0a0a0a;
+}
+
+.file-upload-zone:hover,
+.file-upload-zone.drag-over {
+  border-color: rgba(198,168,75,0.6);
+  background: rgba(198,168,75,0.03);
+}
+
+.file-upload-zone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.file-upload-icon {
+  font-size: 1.8rem;
+  color: #c6a84b;
+  margin-bottom: 8px;
+}
+
+.file-upload-text {
+  font-size: 0.78rem;
+  color: #666;
+}
+
+.file-upload-text strong { color: #c6a84b; }
+
+.file-preview {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin: 8px auto 0;
+  display: block;
+  border: 1px solid rgba(198,168,75,0.2);
+}
+
+/* Error / success banners inside forms */
+.form-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 13px;
+  background: rgba(220,53,69,0.08);
+  border: 1px solid rgba(220,53,69,0.22);
+  border-radius: 2px;
+  font-size: 0.8rem;
+  color: #e07070;
+  margin-bottom: 14px;
+}
+
+.form-success {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 13px;
+  background: rgba(40,167,69,0.08);
+  border: 1px solid rgba(40,167,69,0.22);
+  border-radius: 2px;
+  font-size: 0.8rem;
+  color: #6fcf97;
+  margin-bottom: 14px;
+}
+
+/* Spinner */
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(0,0,0,0.25);
+  border-top-color: #000;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  vertical-align: middle;
+}
+
+.spinner.light {
+  border-color: rgba(198,168,75,0.25);
+  border-top-color: #c6a84b;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── SPORT GRID ── */
+.sports-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 220px);
+  gap: 36px;
+  margin-top: 24px;
+  justify-content: center;
+}
+
+.sport-card {
+  background: #111;
+  border: 1px solid rgba(198,168,75,0.12);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  width: 220px;
+}
+
+.sport-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c6a84b, transparent);
+  transform: scaleX(0);
+  transition: transform 0.25s ease;
+  border-radius: 12px 12px 0 0;
+}
+
+.sport-card:hover {
+  border-color: rgba(198,168,75,0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+}
+
+.sport-card:hover::before { transform: scaleX(1); }
+
+.sport-card-img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+  background: #0a0a0a;
+}
+
+.sport-card-img-placeholder {
+  width: 100%;
+  aspect-ratio: 1;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(198,168,75,0.2);
+}
+
+.sport-card-name {
+  padding: 10px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  text-align: center;
+  border-top: 1px solid rgba(198,168,75,0.08);
+}
+
+/* ── APPLICATIONS TABLE ── */
+.app-table-wrap {
+  overflow-x: auto;
+  margin-top: 8px;
+}
+
+.app-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.app-table th {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #555;
+  border-bottom: 1px solid rgba(198,168,75,0.1);
+  white-space: nowrap;
+}
+
+.app-table td {
+  padding: 13px 14px;
+  color: #ccc;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  vertical-align: middle;
+}
+
+.app-table tr:last-child td { border-bottom: none; }
+
+.app-table tr:hover td { background: rgba(198,168,75,0.03); }
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.status-badge.pending {
+  color: #f0c060;
+  background: rgba(240,192,96,0.1);
+  border: 1px solid rgba(240,192,96,0.25);
+}
+
+.status-badge.active {
+  color: #6fcf97;
+  background: rgba(111,207,151,0.1);
+  border: 1px solid rgba(111,207,151,0.25);
+}
+
+.status-badge.inactive {
+  color: #e07070;
+  background: rgba(220,53,69,0.1);
+  border: 1px solid rgba(220,53,69,0.25);
+}
+
+.action-btns {
+  display: flex;
+  gap: 8px;
+}
+
+/* Sport detail modal */
+.sport-detail-img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(198,168,75,0.15);
+}
+
+.sport-detail-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.sport-detail-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #555;
+}
+
+.sport-detail-value {
+  font-size: 0.9rem;
+  color: #ddd;
+}
+
+/* Confirm modal */
+.confirm-text {
+  font-size: 0.88rem;
+  color: #aaa;
+  line-height: 1.65;
+  margin-bottom: 24px;
+}
+
+.confirm-name {
+  color: #c6a84b;
+  font-weight: 700;
+}
+
+.confirm-btns {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #444;
+}
+
+.empty-state-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+  color: rgba(198,168,75,0.2);
+}
+
+.empty-state p { font-size: 0.85rem; }
+
+/* Loading row */
+.loading-row td {
+  text-align: center;
+  padding: 40px;
+  color: #444;
+}
+
+/* ── MANAGE FIELDS — sport selector cards ── */
+.mf-sport-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 4px 0;
+}
+
+.mf-sport-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100px;
+  background: #0a0a0a;
+  border: 1.5px solid rgba(198,168,75,0.15);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0 0 8px;
+  transition: all 0.22s ease;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.mf-sport-card:hover {
+  border-color: rgba(198,168,75,0.45);
+  background: rgba(198,168,75,0.04);
+}
+
+.mf-sport-card.selected {
+  border-color: #c6a84b;
+  background: rgba(198,168,75,0.07);
+}
+
+.mf-sport-card-img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+
+.mf-sport-card-img-placeholder {
+  width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(198,168,75,0.25);
+  background: #111;
+}
+
+.mf-sport-card-name {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ccc;
+  margin-top: 6px;
+  padding: 0 6px;
+  text-align: center;
+}
+
+.mf-sport-card.selected .mf-sport-card-name {
+  color: #c6a84b;
+}
+
+.mf-sport-card-check {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 18px;
+  height: 18px;
+  background: #c6a84b;
+  color: #000;
+  border-radius: 50%;
+  font-size: 0.65rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* ── MANAGE FIELDS — filter tabs ── */
+.mf-filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.mf-filter-tab {
+  padding: 7px 18px;
+  background: transparent;
+  border: 1px solid rgba(198,168,75,0.2);
+  border-radius: 100px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mf-filter-tab:hover {
+  color: #fff;
+  border-color: rgba(198,168,75,0.5);
+}
+
+.mf-filter-tab.active {
+  background: rgba(198,168,75,0.12);
+  border-color: #c6a84b;
+  color: #c6a84b;
+}
+
+/* ── MANAGE TEAMS — team cards grid ── */
+.mt-teams-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 4px;
+}
+
+.mt-team-card {
+  background: #111;
+  border: 1px solid rgba(198,168,75,0.12);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px 20px;
+  gap: 14px;
+  outline: none;
+}
+
+.mt-team-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c6a84b, transparent);
+  transform: scaleX(0);
+  transition: transform 0.22s ease;
+}
+
+.mt-team-card:hover,
+.mt-team-card:focus-visible {
+  border-color: rgba(198,168,75,0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+}
+
+.mt-team-card:hover::before,
+.mt-team-card:focus-visible::before { transform: scaleX(1); }
+
+.mt-team-logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mt-team-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.mt-team-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  word-break: break-word;
+}
+
+.mt-team-sport {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #c6a84b;
+}
+
+.mt-team-spot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 5px 12px;
+  background: rgba(198,168,75,0.06);
+  border: 1px solid rgba(198,168,75,0.12);
+  border-radius: 100px;
+}
+
+.mt-team-spot-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #555;
+}
+
+.mt-team-spot-value {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #ccc;
+}
+
+@media (max-width: 1200px) {
+  .sports-grid { grid-template-columns: repeat(3, 220px); }
+  .mt-teams-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 900px) {
+  .sports-grid { grid-template-columns: repeat(2, 220px); }
+  .admin-main  { padding: 24px 20px; }
+  .mt-teams-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .sports-grid { grid-template-columns: repeat(1, 220px); }
+  .mt-teams-grid { grid-template-columns: repeat(1, 1fr); }
+}
+
+/* ── MANAGE CAPTAINS — captain cards grid ── */
+.mc-captains-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 4px;
+}
+
+.mc-captain-card {
+  background: #111;
+  border: 1px solid rgba(198,168,75,0.12);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 16px 22px;
+  gap: 14px;
+  outline: none;
+}
+
+.mc-captain-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c6a84b, transparent);
+  transform: scaleX(0);
+  transition: transform 0.22s ease;
+}
+
+.mc-captain-card:hover,
+.mc-captain-card:focus-visible {
+  border-color: rgba(198,168,75,0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+}
+
+.mc-captain-card:hover::before,
+.mc-captain-card:focus-visible::before { transform: scaleX(1); }
+
+.mc-captain-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+}
+
+.mc-captain-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  word-break: break-word;
+}
+
+.mc-captain-sport {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #c6a84b;
+}
+
+.mc-captain-team {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+  padding: 5px 12px;
+  background: rgba(198,168,75,0.06);
+  border: 1px solid rgba(198,168,75,0.12);
+  border-radius: 100px;
+  max-width: 100%;
+}
+
+.mc-captain-team-icon {
+  display: flex;
+  align-items: center;
+  color: rgba(198,168,75,0.5);
+  flex-shrink: 0;
+}
+
+.mc-captain-team-icon svg {
+  width: 13px;
+  height: 13px;
+}
+
+.mc-captain-team-name {
+  font-size: 0.67rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #888;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 1200px) { .mc-captains-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 900px)  { .mc-captains-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px)  { .mc-captains-grid { grid-template-columns: repeat(1, 1fr); } }
+
+/* ── MANAGE FIELDS — Availability banner ── */
+.mf-avail-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 22px;
+  background: rgba(220,53,69,0.07);
+  border: 1px solid rgba(220,53,69,0.2);
+}
+
+.mf-avail-banner[data-available="true"] {
+  background: rgba(111,207,151,0.07);
+  border-color: rgba(111,207,151,0.22);
+}
+
+.mf-avail-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #e07070;
+}
+
+.mf-avail-banner[data-available="true"] .mf-avail-dot {
+  background: #6fcf97;
+  box-shadow: 0 0 6px rgba(111,207,151,0.6);
+  animation: mf-pulse 2s ease-in-out infinite;
+}
+
+@keyframes mf-pulse {
+  0%, 100% { box-shadow: 0 0 4px rgba(111,207,151,0.5); }
+  50%       { box-shadow: 0 0 10px rgba(111,207,151,0.9); }
+}
+
+.mf-avail-text {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #e07070;
+  flex: 1;
+}
+
+.mf-avail-banner[data-available="true"] .mf-avail-text {
+  color: #6fcf97;
+}
+
+.mf-avail-time {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  color: #555;
+}
+
+/* ── MANAGE FIELDS — Reservations list ── */
+.mf-reservations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.mf-res-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mf-res-section-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #555;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.mf-res-active-label { color: #c6a84b; }
+
+.mf-res-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.02);
+  flex-wrap: wrap;
+}
+
+.mf-res-row.mf-res-active {
+  background: rgba(198,168,75,0.06);
+  border-color: rgba(198,168,75,0.2);
+}
+
+.mf-res-row.mf-res-past {
+  opacity: 0.5;
+}
+
+.mf-res-label-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.mf-res-match-label {
+  font-size: 0.83rem;
+  font-weight: 700;
+  color: #ddd;
+  white-space: nowrap;
+}
+
+.mf-res-row.mf-res-active .mf-res-match-label { color: #c6a84b; }
+
+.mf-res-tournament {
+  font-size: 0.7rem;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mf-res-times {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.mf-res-time-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.mf-res-time-tag {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #555;
+}
+
+.mf-res-times span:not(.mf-res-time-block):not(.mf-res-time-tag):not(.mf-res-arrow) {
+  font-size: 0.78rem;
+  color: #bbb;
+  font-variant-numeric: tabular-nums;
+}
+
+.mf-res-arrow {
+  color: #444;
+  display: flex;
+  align-items: center;
+}

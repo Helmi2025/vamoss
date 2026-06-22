@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Application Approved – VAMOS SPORT</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #6b6b6b;
+    }
+    .wrapper {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .header {
+      background-color: #000000;
+      padding: 32px 40px;
+      text-align: center;
+    }
+    .header img { max-width: 140px; height: auto; }
+    .divider {
+      height: 4px;
+      background: linear-gradient(90deg, #c6a84b, #f0d080, #c6a84b);
+    }
+    .body { padding: 40px; }
+    .body h1 { color: #000000; font-size: 22px; margin-bottom: 16px; }
+    .body h1 span { color: #c6a84b; }
+    .body p {
+      font-size: 15px;
+      line-height: 1.7;
+      color: #6b6b6b;
+      margin-bottom: 14px;
+    }
+    /* ── Checkmark icon ── */
+    .icon-wrapper {
+      text-align: center;
+      margin: 24px 0;
+    }
+    .check-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #c6a84b, #f0d080);
+      font-size: 36px;
+    }
+    /* ── Info card ── */
+    .card {
+      background: #f9f9f9;
+      border-left: 4px solid #c6a84b;
+      border-radius: 4px;
+      padding: 20px 24px;
+      margin: 24px 0;
+    }
+    .card p { margin-bottom: 8px; font-size: 14px; }
+    .card p:last-child { margin-bottom: 0; }
+    .card strong { color: #000000; }
+    /* ── CTA button ── */
+    .btn-wrapper { text-align: center; margin: 28px 0; }
+    .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #c6a84b, #f0d080);
+      color: #000000 !important;
+      font-weight: 700;
+      font-size: 15px;
+      text-decoration: none;
+      padding: 14px 36px;
+      border-radius: 30px;
+      letter-spacing: 0.5px;
+    }
+    .badge-active {
+      display: inline-block;
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #4caf50;
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .footer {
+      background-color: #000000;
+      padding: 24px 40px;
+      text-align: center;
+    }
+    .footer p { color: #6b6b6b; font-size: 12px; line-height: 1.6; }
+    .footer a { color: #c6a84b; text-decoration: none; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <img th:src="${logoUrl}" src="" alt="VAMOS SPORT" style="max-width:140px; height:auto;"/>
+  </div>
+  <div class="divider"></div>
+
+  <!-- Body -->
+  <div class="body">
+    <h1 style="text-align:center;">Welcome to <span>VAMOS SPORT</span>!</h1>
+
+    <p>Hello <strong th:text="${captainName}">Captain</strong>,</p>
+
+    <p>
+      Great news! Your captain application has been <strong>reviewed and approved</strong>
+      by our administration team. Your account is now active and ready to use.
+    </p>
+
+    <div class="card">
+      <p><strong>Name:</strong> <span th:text="${captainName}">–</span></p>
+      <p><strong>Email:</strong> <span th:text="${email}">–</span></p>
+      <p><strong>Team:</strong> <span th:text="${teamName}">–</span></p>
+      <p><strong>Sport:</strong> <span th:text="${sportName}">–</span></p>
+      <p><strong>Status:</strong> &nbsp;<span class="badge-active">✔ Active</span></p>
+    </div>
+
+    <p>
+      You can now log in to the platform and start managing your team, registering
+      for tournaments, and much more.
+    </p>
+
+    <div class="btn-wrapper">
+      <a th:href="${loginUrl}" href="#" class="btn">Go to Login →</a>
+    </div>
+
+    <p>
+      If you need any help getting started, contact us at
+      <a href="mailto:vamossportsfax@gmail.com" style="color:#c6a84b;">vamossportsfax@gmail.com</a>.
+    </p>
+
+    <p>Welcome aboard — let the games begin! 🏆</p>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>© 2025 VAMOS SPORT. All rights reserved.</p>
+    <p>You received this email because your captain application was approved.</p>
+  </div>
+
+</div>
+</body>
+</html>

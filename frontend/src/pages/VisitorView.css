@@ -1,0 +1,57 @@
+/* ── Visitor View ── */
+.visitor-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 24px;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(198, 168, 75, 0.15);
+}
+
+.visitor-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #c6a84b;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.visitor-back-btn:hover {
+  background: rgba(198, 168, 75, 0.1);
+}
+
+.visitor-badge {
+  margin-left: auto;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #888;
+  padding: 4px 12px;
+  border: 1px solid rgba(136, 136, 136, 0.3);
+  border-radius: 100px;
+}
+
+.btn-sm {
+  padding: 8px 18px;
+  font-size: 0.72rem;
+}
+
+.visitor-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}

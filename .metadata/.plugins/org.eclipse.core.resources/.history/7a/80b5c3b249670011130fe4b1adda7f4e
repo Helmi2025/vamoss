@@ -1,0 +1,52 @@
+package com.example.backend.dto;
+
+import com.example.backend.entity.User;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+// ─── Request DTOs ─────────────────────────────────────────────────────────────
+
+public class AuthDtos {
+
+    // Login request (shared by all roles)
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class LoginRequest {
+        private String email;
+        private String password;
+    }
+
+    // Register request (admin creates users, or self-registration)
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RegisterRequest {
+        private String email;
+        private String password;
+        private String fullName;
+        private String phoneNumber;
+        private User.Role role; // ADMIN | CAPTAIN | PLAYER
+    }
+
+    // JWT response returned after successful login / register
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AuthResponse {
+        private String token;
+        private String userId;
+        private String email;
+        private String fullName;
+        private User.Role role;
+    }
+
+    // Generic message wrapper
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MessageResponse {
+        private String message;
+    }
+}
