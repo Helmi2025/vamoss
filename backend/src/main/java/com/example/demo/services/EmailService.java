@@ -151,6 +151,23 @@ public class EmailService {
         send(toEmail, "Update on your VAMOS SPORT player application", html);
     }
 
+    // ── 8. Referee created ─────────────────────────────────────────────────────
+
+    public void sendRefereeCreated(String toEmail,
+                                   String refereeName,
+                                   String plainPassword,
+                                   String loginUrl) {
+        Context ctx = new Context();
+        ctx.setVariable("refereeName", refereeName);
+        ctx.setVariable("email", toEmail);
+        ctx.setVariable("password", plainPassword);
+        ctx.setVariable("loginUrl", loginUrl);
+        ctx.setVariable("logoUrl", "cid:logo");
+
+        String html = templateEngine.process("email/referee-created", ctx);
+        send(toEmail, "Welcome to VAMOS SPORT as a Referee!", html);
+    }
+
     // ── Internal send with logo inline ─────────────────────────────────────────
 
     private void send(String to, String subject, String htmlBody) {

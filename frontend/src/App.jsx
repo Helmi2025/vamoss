@@ -11,6 +11,7 @@ import AdminDashboard             from './pages/dashboards/AdminDashboard'
 import CaptainDashboard           from './pages/dashboards/CaptainDashboard'
 import PlayerDashboard            from './pages/dashboards/PlayerDashboard'
 import IndividualPlayerDashboard  from './pages/dashboards/IndividualPlayerDashboard'
+import RefereeDashboard           from './pages/dashboards/RefereeDashboard'
 import ProtectedRoute             from './router/ProtectedRoute'
 import TournamentBracketView      from './pages/TournamentBracketView'
 
@@ -24,6 +25,7 @@ function RedirectIfAuthenticated({ children }) {
 
   if (user.role === 'ADMIN')   return <Navigate to="/dashboard/admin"   replace />
   if (user.role === 'CAPTAIN') return <Navigate to="/dashboard/captain" replace />
+  if (user.role === 'REFEREE') return <Navigate to="/dashboard/referee" replace />
   if (user.role === 'PLAYER') {
     // Individual players (tennis/padel) have sportId; team players have teamId
     if (user.sportId) return <Navigate to="/dashboard/player/individual" replace />
@@ -71,8 +73,13 @@ function App() {
           <Route path="/dashboard/player/individual" element={<IndividualPlayerDashboard />} />
         </Route>
 
+        {/* Protected — Referee */}
+        <Route element={<ProtectedRoute allowedRoles={['REFEREE']} />}>
+          <Route path="/dashboard/referee" element={<RefereeDashboard />} />
+        </Route>
+
         {/* Shared — Bracket viewer (all authenticated roles) */}
-        <Route element={<ProtectedRoute allowedRoles={['ADMIN', 'CAPTAIN', 'PLAYER']} />}>
+        <Route element={<ProtectedRoute allowedRoles={['ADMIN', 'CAPTAIN', 'PLAYER', 'REFEREE']} />}>
           <Route path="/tournaments/:id/bracket" element={<TournamentBracketView />} />
         </Route>
 

@@ -17,4 +17,6 @@ public interface PlayerRepository extends MongoRepository<Player, String> {
     List<Player> findBySportId(String sportId);
 
     Optional<Player> findByCaptainIdAndPlayerId(String captainId, String playerId);
+    
+    List<Player> findByPlayerId(String playerId);
 }

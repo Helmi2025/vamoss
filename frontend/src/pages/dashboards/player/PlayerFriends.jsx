@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useAuth } from '../../../context/AuthContext'
 import api from '../../../api/axiosInstance'
 import '../AdminDashboard.css'
@@ -11,6 +12,7 @@ const IconTrash   = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="
 const IconCheck   = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
 const IconClose   = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
 const IconUser    = () => <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+const IconMessage = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
 
 /* ── Avatar ── */
 function Avatar({ src, name, size = 52 }) {
@@ -58,7 +60,7 @@ function GenderBadge({ gender }) {
 }
 
 /* ── Tab: Friends ── */
-function FriendsTab({ friends }) {
+function FriendsTab({ friends, onMessage }) {
   if (friends.length === 0) return (
     <div className="empty-state">
       <div className="empty-state-icon"><IconUser /></div>
@@ -75,10 +77,25 @@ function FriendsTab({ friends }) {
           background: 'rgba(129,199,132,0.04)', border: '1px solid rgba(129,199,132,0.18)',
         }}>
           <Avatar src={f.photoUrl} name={f.username} size={48} />
-          <div>
+          <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ fontSize: 14, fontWeight: 700, color: '#f0e6c8' }}>{f.username}</div>
             <GenderBadge gender={f.gender} />
           </div>
+          <button
+            onClick={() => onMessage(f.playerId)}
+            title="Send message"
+            style={{
+              display: 'flex', alignItems: 'center', gap: 5,
+              padding: '6px 12px', borderRadius: 8,
+              background: 'rgba(198,168,75,0.08)', border: '1px solid rgba(198,168,75,0.3)',
+              color: '#c6a84b', fontSize: 12, fontWeight: 600, cursor: 'pointer',
+              transition: 'background 0.2s', flexShrink: 0,
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = 'rgba(198,168,75,0.18)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'rgba(198,168,75,0.08)'}
+          >
+            <IconMessage /> Chat
+          </button>
         </div>
       ))}
     </div>
@@ -273,6 +290,11 @@ function ReceivedTab({ received, onAccept, onReject }) {
 export default function PlayerFriends() {
   const { user }  = useAuth()
   const playerId  = user?.userId
+  const [, setSearchParams] = useSearchParams()
+
+  function openChat(friendId) {
+    setSearchParams({ section: 'messages', chatWith: friendId })
+  }
 
   const [data,     setData]     = useState({ friends: [], sentRequests: [], receivedRequests: [] })
   const [loading,  setLoading]  = useState(true)
@@ -366,7 +388,7 @@ export default function PlayerFriends() {
         <div className="empty-state"><span className="spinner light" style={{ width: 28, height: 28 }} /></div>
       ) : (
         <>
-          {activeTab === 'friends'  && <FriendsTab  friends={data.friends} />}
+          {activeTab === 'friends'  && <FriendsTab  friends={data.friends} onMessage={openChat} />}
           {activeTab === 'sent'     && <SentTab     sent={data.sentRequests}     onCancel={handleCancel} />}
           {activeTab === 'received' && <ReceivedTab received={data.receivedRequests} onAccept={handleAccept} onReject={handleReject} />}
         </>

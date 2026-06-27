@@ -370,6 +370,74 @@
   flex-shrink: 0;
 }
 
+/* ── SWAP MODAL STYLES ── */
+.swap-match-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.swap-match-card {
+  background: #141414;
+  border: 1px solid rgba(198, 168, 75, 0.15);
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.swap-match-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.swap-position-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border: 1px solid rgba(198, 168, 75, 0.1);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.swap-position-option:hover:not(.disabled) {
+  border-color: rgba(198, 168, 75, 0.3);
+  background: rgba(198, 168, 75, 0.05);
+}
+
+.swap-position-option.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.swap-position-option input[type="radio"] {
+  accent-color: #c6a84b;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.swap-position-option.disabled input[type="radio"] {
+  cursor: not-allowed;
+}
+
+.swap-position-label {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.swap-position-label strong {
+  color: #f0e6c8;
+  margin-left: 4px;
+}
+
+.swap-position-option.disabled .swap-position-label strong {
+  color: #666;
+}
+
 /* ── MATCH DETAIL MODAL ── */
 .bm-modal {
   max-width: 440px !important;

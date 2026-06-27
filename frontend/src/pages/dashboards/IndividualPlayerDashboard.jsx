@@ -6,9 +6,10 @@ import PlayerManageProfile          from './player/PlayerManageProfile'
 import IndividualPlayerTournaments  from './player/IndividualPlayerTournaments'
 import ExplorePlayers               from './player/ExplorePlayers'
 import PlayerFriends                from './player/PlayerFriends'
+import TeamChatWrapper              from './chat/TeamChatWrapper'
 import './AdminDashboard.css'
 
-const VALID_SECTIONS = ['home', 'profile', 'tournaments', 'explore', 'friends']
+const VALID_SECTIONS = ['home', 'profile', 'tournaments', 'explore', 'friends', 'messages']
 
 function IndividualPlayerDashboard() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -27,6 +28,7 @@ function IndividualPlayerDashboard() {
     tournaments: <IndividualPlayerTournaments />,
     explore:     <ExplorePlayers />,
     friends:     <PlayerFriends />,
+    messages:    <TeamChatWrapper />,
   }
 
   return (

@@ -18,6 +18,7 @@ const IconClose    = () => <svg width="18" height="18" viewBox="0 0 24 24" fill=
 const IconTournament = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" /><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" /><path d="M4 22h16" /><path d="M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34" /><path d="M12 2a5 5 0 0 0-6 4.88c0 3 2.1 5.37 5 5.8V2z" /></svg>
 const IconCaptain  = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/><path d="M12 2l1.5 3h3l-2.5 2 1 3L12 8.5 9 10l1-3L7.5 5h3z"/></svg>
 const IconPlayer   = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+const IconReferee  = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M12 4v16"/><path d="M8 8h2"/><path d="M14 8h2"/><path d="M8 12h8"/></svg>
 
 const NAV_ITEMS = [
   { key: 'home',                 label: 'Home',                Icon: IconHome    },
@@ -27,6 +28,7 @@ const NAV_ITEMS = [
   { key: 'teams',                label: 'Manage Teams',         Icon: IconTeams   },
   { key: 'captains',             label: 'Manage Captains',      Icon: IconCaptain },
   { key: 'players',              label: 'Manage Players',       Icon: IconPlayer  },
+  { key: 'referees',             label: 'Manage Referees',      Icon: IconReferee },
   { key: 'tournaments',          label: 'Manage Tournaments',   Icon: IconTournament },
   { key: 'applications',         label: 'Captain Applications', Icon: IconApp     },
   { key: 'player-applications',  label: 'Player Applications',  Icon: IconApp     },

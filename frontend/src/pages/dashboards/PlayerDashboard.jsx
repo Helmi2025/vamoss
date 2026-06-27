@@ -5,9 +5,10 @@ import UserHomePage       from './UserHomePage'
 import PlayerTeam          from './player/PlayerTeam'
 import PlayerManageProfile from './player/PlayerManageProfile'
 import PlayerTournaments   from './player/PlayerTournaments'
+import TeamChatWrapper     from './chat/TeamChatWrapper'
 import './AdminDashboard.css'
 
-const VALID_SECTIONS = ['home', 'team', 'profile', 'tournaments']
+const VALID_SECTIONS = ['home', 'team', 'profile', 'tournaments', 'messages']
 
 function PlayerDashboard() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -25,6 +26,7 @@ function PlayerDashboard() {
     team:    <PlayerTeam />,
     profile: <PlayerManageProfile />,
     tournaments: <PlayerTournaments />,
+    messages:    <TeamChatWrapper />,
   }
 
   return (

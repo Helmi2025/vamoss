@@ -39,6 +39,7 @@ public class TeamManagementService {
     private final PasswordEncoder   passwordEncoder;
     private final GridFsTemplate    gridFsTemplate;
     private final GridFsOperations  gridFsOperations;
+    private final ChatService       chatService;
 
     @Value("${app.base-url}")
     private String baseUrl;
@@ -294,6 +295,9 @@ public class TeamManagementService {
         Player saved = playerRepository.save(player);
         saved.setPlayerId(saved.getUserId());
         saved = playerRepository.save(saved);
+
+        chatService.ensureTeamThread(team.getId());
+        chatService.addParticipantToTeamThread(team.getId(), saved.getPlayerId());
 
         // Send welcome email with credentials
         emailService.sendPlayerAdded(

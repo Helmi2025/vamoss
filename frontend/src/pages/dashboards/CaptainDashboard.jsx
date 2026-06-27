@@ -5,9 +5,10 @@ import UserHomePage       from './UserHomePage'
 import CaptainManageProfile from './captain/CaptainManageProfile'
 import CaptainManageTeam   from './captain/CaptainManageTeam'
 import CaptainTournaments  from './captain/CaptainTournaments'
+import TeamChatWrapper     from './chat/TeamChatWrapper'
 import './AdminDashboard.css'
 
-const VALID_SECTIONS = ['home', 'profile', 'team', 'tournaments']
+const VALID_SECTIONS = ['home', 'profile', 'team', 'tournaments', 'messages']
 
 function CaptainDashboard() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -25,6 +26,7 @@ function CaptainDashboard() {
     profile: <CaptainManageProfile />,
     team:    <CaptainManageTeam />,
     tournaments: <CaptainTournaments />,
+    messages:    <TeamChatWrapper />,
   }
 
   return (

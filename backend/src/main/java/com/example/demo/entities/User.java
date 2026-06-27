@@ -25,12 +25,12 @@ public class User {
 
     private String phoneNumber;
 
-    private Role role; // ADMIN, CAPTAIN, PLAYER
+    private Role role; // ADMIN, CAPTAIN, PLAYER, REFEREE
 
     private AccountStatus accountStatus = AccountStatus.ACTIVE;
 
     public enum Role {
-        ADMIN, CAPTAIN, PLAYER
+        ADMIN, CAPTAIN, PLAYER, REFEREE
     }
 
     public enum AccountStatus {

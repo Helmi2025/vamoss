@@ -56,4 +56,9 @@ public interface TournamentMatchRepository extends MongoRepository<TournamentMat
      * Used to fetch past (history) matches.
      */
     List<TournamentMatch> findByScheduledDateBeforeOrderByScheduledDateDesc(LocalDateTime before);
+
+    /**
+     * Returns all matches assigned to a specific referee.
+     */
+    List<TournamentMatch> findByRefereeId(String refereeId);
 }

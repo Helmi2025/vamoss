@@ -156,4 +156,12 @@ public class TournamentController {
     public List<MatchResponse> getMatches(@PathVariable String id) {
         return matchService.getByTournamentId(id);
     }
+
+    @PostMapping("/{id}/bracket/swap")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void swapBracketParticipants(
+            @PathVariable String id,
+            @Valid @RequestBody BracketSwapRequest request) {
+        bracketService.swapParticipants(id, request);
+    }
 }

@@ -112,4 +112,15 @@ public class AuthDtos {
         private String newEmail;
         private String newPassword;
     }
+
+    // Referee profile update — same fields as captain
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RefereeProfileUpdateRequest {
+        private String currentPassword; // required for name/email/password changes
+        private String newFullName;
+        private String newEmail;
+        private String newPassword;
+    }
 }

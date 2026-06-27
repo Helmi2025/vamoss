@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import api from '../../../api/axiosInstance'
 import AuthImage from '../../../components/AuthImage'
 import TournamentBracket from './TournamentBracket'
+import SwapModal from './SwapModal'
 import './TournamentDetail.css'
 
 /* ── Inline SVG Icons ── */
@@ -442,8 +443,11 @@ function ScheduleMatchModal({ match, tournament, onClose, onScheduled }) {
     match.scheduledDate ? match.scheduledDate.substring(0, 16) : ''
   )
   const [fieldId, setFieldId] = useState(match.fieldId || '')
+  const [refereeId, setRefereeId] = useState(match.refereeId || '')
   const [fields, setFields] = useState([])
+  const [referees, setReferees] = useState([])
   const [fieldsLoading, setFieldsLoading] = useState(true)
+  const [refereesLoading, setRefereesLoading] = useState(true)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -482,6 +486,14 @@ function ScheduleMatchModal({ match, tournament, onClose, onScheduled }) {
     load()
   }, [tournament.sportId, match.fieldId])
 
+  useEffect(() => {
+    // Fetch referees for this tournament's sport
+    api.get(`/api/admin/referees/by-sport/${tournament.sportId}`)
+      .then(({ data }) => setReferees(data))
+      .catch(() => setError('Could not load referees.'))
+      .finally(() => setRefereesLoading(false))
+  }, [tournament.sportId])
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!scheduledDateTime) return setError('Date and time are required.')
@@ -490,10 +502,19 @@ function ScheduleMatchModal({ match, tournament, onClose, onScheduled }) {
     setLoading(true)
     setError('')
     try {
+      // Schedule the match
       const { data } = await api.put(`/api/matches/${match.id}/schedule`, {
         scheduledDateTime,
         fieldId
       })
+      
+      // Assign referee if selected
+      if (refereeId) {
+        await api.put(`/api/matches/${match.id}/assign-referee`, {
+          refereeId
+        })
+      }
+      
       onScheduled(data)
       onClose()
     } catch (err) {
@@ -570,6 +591,29 @@ function ScheduleMatchModal({ match, tournament, onClose, onScheduled }) {
             )}
           </div>
 
+          <div className="form-group">
+            <label className="form-label" htmlFor="sched-referee">Referee (Optional)</label>
+            {refereesLoading ? (
+              <div style={{ color: '#555', fontSize: '0.82rem', padding: '8px 0', display: 'flex', gap: 8, alignItems: 'center' }}>
+                <span className="spinner light" style={{ width: 14, height: 14 }} /> Loading referees…
+              </div>
+            ) : (
+              <select
+                id="sched-referee"
+                className="form-input"
+                value={refereeId}
+                onChange={(e) => setRefereeId(e.target.value)}
+                disabled={loading}
+                style={{ background: '#0a0a0a', color: refereeId ? '#fff' : '#666' }}
+              >
+                <option value="">-- Unassigned --</option>
+                {referees.map((r) => (
+                  <option key={r.refereeId} value={r.refereeId}>{r.fullName}</option>
+                ))}
+              </select>
+            )}
+          </div>
+
           {error && <div className="form-error">{error}</div>}
 
           <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end', marginTop: 18 }}>
@@ -605,6 +649,7 @@ function TournamentDetail({ tournamentId }) {
   const [doublesPlayerDetails, setDoublesPlayerDetails] = useState({})
   const [scoreTarget, setScoreTarget] = useState(null)
   const [scheduleTarget, setScheduleTarget] = useState(null)
+  const [swapTarget, setSwapTarget] = useState(null)
 
   // Team detail modal & unregister confirmation
   const [viewingTeamId, setViewingTeamId] = useState(null)
@@ -734,6 +779,7 @@ function TournamentDetail({ tournamentId }) {
 
   const handleRecordSuccess = () => fetchData()
   const handleScheduleSuccess = () => fetchData()
+  const handleSwapSuccess = () => fetchData()
 
   const getRoundLabel = (r) => {
     switch (r) {
@@ -869,6 +915,7 @@ function TournamentDetail({ tournamentId }) {
             isAdmin={true}
             onSchedule={(m) => setScheduleTarget(m)}
             onScore={(m) => setScoreTarget(m)}
+            onSwap={(m) => setSwapTarget(m)}
           />
         )}
 
@@ -1114,6 +1161,15 @@ function TournamentDetail({ tournamentId }) {
           />
         )
       })()}
+      {swapTarget && bracket && (
+        <SwapModal
+          tournamentId={tournamentId}
+          initialMatch={swapTarget}
+          bracketData={bracket}
+          onClose={() => setSwapTarget(null)}
+          onSuccess={handleSwapSuccess}
+        />
+      )}
     </div>
   )
 }

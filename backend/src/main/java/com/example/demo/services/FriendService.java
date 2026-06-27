@@ -20,6 +20,7 @@ public class FriendService {
 
     private final FriendRequestRepository friendRequestRepository;
     private final UserRepository          userRepository;
+    private final ChatService             chatService;
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
@@ -95,6 +96,7 @@ public class FriendService {
             throw new RuntimeException("Request is no longer pending.");
         req.setStatus(FriendRequest.Status.ACCEPTED);
         friendRequestRepository.save(req);
+        chatService.ensurePrivateThread(req.getSenderId(), req.getReceiverId());
     }
 
     // ── REJECT request ────────────────────────────────────────────────────────

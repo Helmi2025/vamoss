@@ -54,5 +54,15 @@ public class TournamentMatch {
 
     private String fieldId;
 
+    private String refereeId;
+
+    private Integer yellowCardsTeam1;
+
+    private Integer yellowCardsTeam2;
+
+    private Integer redCardsTeam1;
+
+    private Integer redCardsTeam2;
+
     private LocalDateTime createdAt;
 }

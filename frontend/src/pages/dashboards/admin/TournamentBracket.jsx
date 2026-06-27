@@ -116,8 +116,9 @@ function BracketMatch({ match, highlightTeamId, onClick }) {
      tournament     – tournament object (needed for admin schedule validation)
      onSchedule(m)  – admin: open schedule modal for match m
      onScore(m)     – admin: open score modal for match m
+     onSwap(m)      – admin: open swap modal for match m
    ───────────────────────────────────────────── */
-function TournamentBracket({ bracketData, highlightTeamId, isAdmin, onSchedule, onScore }) {
+function TournamentBracket({ bracketData, highlightTeamId, isAdmin, onSchedule, onScore, onSwap }) {
   const [selectedMatch, setSelectedMatch] = useState(null)
 
   if (!bracketData || !bracketData.finalMatch) {
@@ -210,6 +211,7 @@ function TournamentBracket({ bracketData, highlightTeamId, isAdmin, onSchedule, 
           isAdmin={!!isAdmin}
           onSchedule={(m) => { setSelectedMatch(null); onSchedule && onSchedule(m) }}
           onScore={(m)    => { setSelectedMatch(null); onScore    && onScore(m)    }}
+          onSwap={(m)     => { setSelectedMatch(null); onSwap     && onSwap(m)     }}
         />
       )}
     </>

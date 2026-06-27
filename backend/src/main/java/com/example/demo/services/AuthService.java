@@ -6,6 +6,7 @@ import com.example.demo.dto.AuthDtos.RegisterRequest;
 import com.example.demo.entities.Admin;
 import com.example.demo.entities.Captain;
 import com.example.demo.entities.Player;
+import com.example.demo.entities.Referee;
 import com.example.demo.entities.User;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.security.JwtService;
@@ -87,6 +88,7 @@ public class AuthService {
             case ADMIN   -> new Admin(req.getEmail(), hashed, req.getFullName(), req.getPhoneNumber());
             case CAPTAIN -> new Captain(req.getEmail(), hashed, req.getFullName(), req.getPhoneNumber());
             case PLAYER  -> new Player(req.getEmail(), hashed, req.getFullName(), req.getPhoneNumber());
+            case REFEREE -> new Referee(req.getEmail(), hashed, req.getFullName(), req.getPhoneNumber());
         };
     }
 
@@ -95,6 +97,7 @@ public class AuthService {
             case ADMIN   -> ((Admin) user).setAdminId(user.getUserId());
             case CAPTAIN -> ((Captain) user).setCaptainId(user.getUserId());
             case PLAYER  -> ((Player) user).setPlayerId(user.getUserId());
+            case REFEREE -> ((Referee) user).setRefereeId(user.getUserId());
         }
     }
 

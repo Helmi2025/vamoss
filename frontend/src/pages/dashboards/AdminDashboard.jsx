@@ -8,6 +8,7 @@ import ManageFields        from './admin/ManageFields'
 import ManageTeams         from './admin/ManageTeams'
 import ManageCaptains      from './admin/ManageCaptains'
 import ManagePlayers       from './admin/ManagePlayers'
+import ManageReferees      from './admin/ManageReferees'
 import CaptainApplications from './admin/CaptainApplications'
 import PlayerApplications  from './admin/PlayerApplications'
 import ManageTournaments  from './admin/ManageTournaments'
@@ -15,7 +16,7 @@ import TournamentDetail   from './admin/TournamentDetail'
 import api                 from '../../api/axiosInstance'
 import './AdminDashboard.css'
 
-const VALID_SECTIONS = ['home', 'profile', 'sports', 'fields', 'teams', 'captains', 'players', 'applications', 'player-applications', 'tournaments', 'tournament-detail']
+const VALID_SECTIONS = ['home', 'profile', 'sports', 'fields', 'teams', 'captains', 'players', 'referees', 'applications', 'player-applications', 'tournaments', 'tournament-detail']
 
 function AdminDashboard() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -55,6 +56,7 @@ function AdminDashboard() {
     teams:                 <ManageTeams />,
     captains:              <ManageCaptains />,
     players:               <ManagePlayers />,
+    referees:              <ManageReferees />,
     applications:          <CaptainApplications onCountChange={setPendingCount} />,
     'player-applications': <PlayerApplications onCountChange={setPendingPlayerCount} />,
     tournaments:           <ManageTournaments />,

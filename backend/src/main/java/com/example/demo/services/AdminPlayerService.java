@@ -19,6 +19,7 @@ public class AdminPlayerService {
     private final UserRepository userRepository;
     private final TeamRepository teamRepository;
     private final SportService   sportService;
+    private final ChatService    chatService;
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
@@ -112,8 +113,11 @@ public class AdminPlayerService {
     public void deletePlayer(String playerId) {
         User user = userRepository.findById(playerId)
                 .orElseThrow(() -> new RuntimeException("Player not found: " + playerId));
-        if (!(user instanceof Player)) {
+        if (!(user instanceof Player player)) {
             throw new RuntimeException("User is not a player: " + playerId);
+        }
+        if (player.getTeamId() != null) {
+            chatService.removeParticipantFromTeamThread(player.getTeamId(), playerId);
         }
         userRepository.deleteById(playerId);
     }

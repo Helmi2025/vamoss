@@ -57,12 +57,16 @@ public class SecurityConfig {
                 .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/fields/**").permitAll()
                 // Allow Spring's error endpoint so exception responses reach the client
                 .requestMatchers("/error").permitAll()
+                // WebSocket handshake endpoint
+                .requestMatchers("/ws/**").permitAll()
                 // Admin-only endpoints
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 // Captain-only endpoints
                 .requestMatchers("/api/captain/**").hasRole("CAPTAIN")
                 // Player-only endpoints
                 .requestMatchers("/api/player/**").hasRole("PLAYER")
+                // Referee-only endpoints
+                .requestMatchers("/api/referee/**").hasRole("REFEREE")
                 // Everything else requires authentication
                 .anyRequest().authenticated()
             )

@@ -1,7 +1,9 @@
 package com.example.demo.services;
 
 import com.example.demo.dto.BracketResponse;
+import com.example.demo.dto.BracketSwapRequest;
 import com.example.demo.entities.*;
+import com.example.demo.exceptions.BusinessException;
 import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.repositories.*;
 import com.example.demo.tournament.MatchRound;
@@ -419,5 +421,107 @@ public class BracketServiceImpl implements BracketService {
             logoUrl = player1PhotoUrl;
         }
         return new BracketResponse.ParticipantSummary(id, name, logoUrl, player1Id, player2Id, player1PhotoUrl, player2PhotoUrl);
+    }
+
+    @Override
+    public void swapParticipants(String tournamentId, BracketSwapRequest request) {
+        Tournament tournament = tournamentRepository.findById(tournamentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Tournament not found"));
+
+        // Validate that tournament is in appropriate state for swapping
+        if (tournament.getStatus() != TournamentStatus.BRACKET_GENERATED && 
+            tournament.getStatus() != TournamentStatus.IN_PROGRESS) {
+            throw new BusinessException("Cannot swap participants after tournament has completed");
+        }
+
+        TournamentMatch match1 = tournamentMatchRepository.findById(request.getMatch1Id())
+                .orElseThrow(() -> new ResourceNotFoundException("Match 1 not found"));
+        
+        TournamentMatch match2 = tournamentMatchRepository.findById(request.getMatch2Id())
+                .orElseThrow(() -> new ResourceNotFoundException("Match 2 not found"));
+
+        // Validate matches belong to the same tournament
+        if (!match1.getTournamentId().equals(tournamentId) || !match2.getTournamentId().equals(tournamentId)) {
+            throw new BusinessException("Matches must belong to the same tournament");
+        }
+
+        // Validate positions
+        if (request.getMatch1Position() < 1 || request.getMatch1Position() > 2 ||
+            request.getMatch2Position() < 1 || request.getMatch2Position() > 2) {
+            throw new BusinessException("Position must be 1 or 2");
+        }
+
+        // Validate that matches haven't been played yet
+        if (match1.getStatus() == MatchStatus.PLAYED || match2.getStatus() == MatchStatus.PLAYED) {
+            throw new BusinessException("Cannot swap participants in matches that have already been played");
+        }
+
+        // Check if downstream matches (semi-finals, finals) have been scheduled
+        // If the matches being swapped feed into next matches, those shouldn't be scheduled yet
+        if (match1.getNextMatchId() != null) {
+            TournamentMatch nextMatch1 = tournamentMatchRepository.findById(match1.getNextMatchId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Next match not found"));
+            if (nextMatch1.getScheduledDate() != null || nextMatch1.getStatus() == MatchStatus.SCHEDULED) {
+                throw new BusinessException("Cannot swap participants when downstream matches have been scheduled");
+            }
+        }
+        
+        if (match2.getNextMatchId() != null) {
+            TournamentMatch nextMatch2 = tournamentMatchRepository.findById(match2.getNextMatchId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Next match not found"));
+            if (nextMatch2.getScheduledDate() != null || nextMatch2.getStatus() == MatchStatus.SCHEDULED) {
+                throw new BusinessException("Cannot swap participants when downstream matches have been scheduled");
+            }
+        }
+
+        // Get participant details from match1
+        String participant1Id, participant1Type;
+        if (request.getMatch1Position() == 1) {
+            participant1Id = match1.getParticipant1Id();
+            participant1Type = match1.getParticipant1Type() != null ? match1.getParticipant1Type().name() : null;
+        } else {
+            participant1Id = match1.getParticipant2Id();
+            participant1Type = match1.getParticipant2Type() != null ? match1.getParticipant2Type().name() : null;
+        }
+
+        // Get participant details from match2
+        String participant2Id, participant2Type;
+        if (request.getMatch2Position() == 1) {
+            participant2Id = match2.getParticipant1Id();
+            participant2Type = match2.getParticipant1Type() != null ? match2.getParticipant1Type().name() : null;
+        } else {
+            participant2Id = match2.getParticipant2Id();
+            participant2Type = match2.getParticipant2Type() != null ? match2.getParticipant2Type().name() : null;
+        }
+
+        // Validate that both participants exist
+        if (participant1Id == null || participant2Id == null) {
+            throw new BusinessException("Cannot swap participants - one or both positions are empty (TBD)");
+        }
+
+        // Perform the swap
+        if (request.getMatch1Position() == 1) {
+            match1.setParticipant1Id(participant2Id);
+            match1.setParticipant1Type(participant2Type != null ? ParticipantType.valueOf(participant2Type) : null);
+        } else {
+            match1.setParticipant2Id(participant2Id);
+            match1.setParticipant2Type(participant2Type != null ? ParticipantType.valueOf(participant2Type) : null);
+        }
+
+        if (request.getMatch2Position() == 1) {
+            match2.setParticipant1Id(participant1Id);
+            match2.setParticipant1Type(participant1Type != null ? ParticipantType.valueOf(participant1Type) : null);
+        } else {
+            match2.setParticipant2Id(participant1Id);
+            match2.setParticipant2Type(participant1Type != null ? ParticipantType.valueOf(participant1Type) : null);
+        }
+
+        // Save both matches
+        tournamentMatchRepository.save(match1);
+        tournamentMatchRepository.save(match2);
+
+        // Update tournament timestamp
+        tournament.setUpdatedAt(LocalDateTime.now());
+        tournamentRepository.save(tournament);
     }
 }
