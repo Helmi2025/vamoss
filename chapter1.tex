@@ -1,0 +1,236 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[french, provide=*]{babel}
+
+\title{Chapitre 1 : Définition du projet et analyse des solutions existantes}
+\author{Manus AI}
+\date{Juin 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+Le succès d'un projet d'ingénierie logicielle repose sur une synergie étroite entre l'expertise technique d'une part, et les besoins spécifiques du métier d'autre part. Ce travail s'articule autour de deux entités majeures : l'agence technologique 21C Digital, qui a fourni le cadre de développement de l'application, et le complexe Vamos Sport Sfax, bénéficiaire final de la solution.
+
+\section{Définition de la mission}
+
+\subsection{Contexte général et organisation d'accueil}
+
+La livraison réussie d'un projet d'ingénierie logicielle repose sur une synergie étroite entre l'expertise technique d'une part, et les besoins spécifiques du métier d'autre part. Ce travail s'articule autour de deux entités majeures : l'agence technologique 21C Digital, qui a fourni le cadre de développement de l'application, et le complexe Vamos Sport Sfax, bénéficiaire final de la solution.
+
+\subsubsection{L'organisation d'accueil : 21C Digital}
+
+Le projet a été réalisé au sein de 21C Digital, une agence d'ingénierie numérique spécialisée dans le conseil en informatique et le développement de logiciels web et mobiles sur mesure. Activement intégrée dans le secteur technologique, l'entreprise accompagne les entreprises dans leur transformation numérique en concevant des architectures logicielles modernes, évolutives et adaptées aux exigences de performance du marché.
+
+En rejoignant les équipes d'ingénierie de 21C Digital, ce projet de fin d'études a bénéficié d'un encadrement professionnel rigoureux, de flux de travail de développement conformes aux normes de l'industrie et de piles technologiques modernes. Cet environnement a fourni le cadre idéal pour la mise en œuvre d'architectures découplées basées sur des API REST et des interfaces utilisateur très réactives.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Images/21.png}
+    \caption{Logo de 21C Digital}
+    \label{fig:21cdigital_logo}
+\end{figure}
+
+\subsubsection{L'organisation bénéficiaire : Vamos Sport Sfax}
+
+Vamos Sport Sfax est un complexe sportif privé qui promeut et facilite la pratique des sports récréatifs et de base. Le complexe, conçu pour répondre aux attentes d'une communauté croissante de passionnés, offre au public des infrastructures modernes et de haute qualité dans quatre disciplines majeures :
+\begin{itemize}
+    \item Football : Terrains artificiels avec des matchs amateurs quotidiens et des tournois d'entreprise ;
+    \item Padel : Nouveaux aménagements de terrains pour un sport en plein essor en Tunisie ;
+    \item Basketball : Espaces pour le streetball (3x3) et les matchs classiques ;
+    \item Tennis : Courts pour l'entraînement et les matchs en simple ou en double.
+\end{itemize}
+Vamos Sport Sfax vise à être plus qu'un simple lieu de location d'installations sportives. L'organisation régulière de tournois, de coupes à élimination directe et de ligues locales est un pilier stratégique majeur pour fidéliser les utilisateurs et dynamiser sa communauté. Pour soutenir cette dynamique de croissance, le complexe a contacté 21C Digital pour combler le fossé existant entre sa gestion opérationnelle des terrains et l'orchestration globale de ses compétitions sportives.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Images/vamos.png}
+    \caption{Logo de Vamos Sport}
+    \label{fig:vamos_logo}
+\end{figure}
+
+\subsection{Présentation de l'application}
+
+\subsubsection{Modules fonctionnels}
+
+Les modules fonctionnels de l'application Vamos Sport, déduits des contrôleurs backend, incluent :
+\begin{itemize}
+    \item \textbf{Gestion des utilisateurs et authentification} : Permet l'inscription, la connexion et la gestion des rôles (Admin, Capitaine, Joueur) [1].
+    \item \textbf{Gestion des capitaines et des joueurs} : Fonctions d'administration pour gérer les capitaines et les joueurs, y compris les applications pour devenir capitaine ou joueur [2, 3, 6, 10, 11].
+    \item \textbf{Gestion des équipes} : Permet la création, la modification et la gestion des équipes par les capitaines et les administrateurs [4, 14].
+    \item \textbf{Gestion des terrains} : Permet aux administrateurs de gérer les terrains disponibles pour les différentes disciplines sportives [8].
+    \item \textbf{Gestion des sports} : Permet de définir et de gérer les différents sports proposés par le complexe [12].
+    \item \textbf{Gestion des matchs} : Inclut la planification, la gestion des scores et le suivi des matchs [9].
+    \item \textbf{Gestion des tournois} : Fonctionnalités complètes pour la création, la gestion, la planification et le suivi des tournois, y compris la génération de tableaux [15].
+    \item \textbf{Statistiques} : Fournit des statistiques sur les joueurs, les équipes et les tournois [13].
+    \item \textbf{Gestion des demandes d'amis} : Permet aux joueurs d'envoyer et de gérer des demandes d'amis (non directement visible dans les contrôleurs mais implicite pour une application sociale) [5].
+\end{itemize}
+
+\subsubsection{Exigences non fonctionnelles}
+
+Les exigences non fonctionnelles pour l'application Vamos Sport sont cruciales pour assurer sa performance, sa sécurité et son expérience utilisateur :
+\begin{itemize}
+    \item \textbf{Performance} : L'application doit être rapide et réactive, avec des temps de chargement minimaux pour les pages et les données.
+    \item \textbf{Sécurité} : Protection des données des utilisateurs, authentification robuste, autorisation basée sur les rôles et prévention des vulnérabilités courantes (ex: injections SQL, XSS).
+    \item \textbf{Disponibilité} : L'application doit être disponible 24h/24 et 7j/7, avec un temps d'arrêt minimal pour la maintenance.
+    \item \textbf{Évolutivité} : La capacité de l'application à gérer un nombre croissant d'utilisateurs, de terrains, de matchs et de tournois sans dégradation significative des performances.
+    \item \textbf{Facilité d'utilisation (UX)} : Une interface utilisateur intuitive et conviviale pour tous les types d'utilisateurs (administrateurs, capitaines, joueurs).
+    \item \textbf{Maintenabilité} : Le code doit être bien structuré, documenté et facile à maintenir et à faire évoluer.
+    \item \textbf{Compatibilité} : L'application doit être compatible avec les navigateurs web modernes et potentiellement des applications mobiles (iOS et Android).
+\end{itemize}
+
+\section{Contexte du sujet}
+
+Le contexte du sujet est la numérisation de la gestion des complexes sportifs et l'organisation de tournois. Vamos Sport Sfax, un complexe sportif moderne, cherche à optimiser la gestion de ses infrastructures et à dynamiser sa communauté en organisant des compétitions. L'application développée par 21C Digital vise à combler le fossé entre la gestion manuelle des terrains et l'orchestration complexe des événements sportifs, offrant une solution intégrée pour les réservations, la gestion des équipes, les matchs et les tournois.
+
+\section{Analyse des applications existantes}
+
+Pour mieux positionner l'application Vamos Sport, une analyse comparative des solutions existantes sur le marché est essentielle. Nous examinerons deux applications pertinentes : Competize et Gestion Sports.
+
+\subsection{Competize}
+
+Competize est une plateforme de gestion de tournois et de ligues sportives qui se concentre sur l'engagement des fans, la communication pour les athlètes et la planification pour les organisateurs [16].
+
+\subsubsection{Fonctionnalités clés}
+\begin{itemize}
+    \item \textbf{Planification automatisée} : Génération de calendriers de matchs et de lieux.
+    \item \textbf{Gestion des scores en direct} : Mise à jour en temps réel des résultats.
+    \item \textbf{Tableaux et classements automatiques} : Calcul automatique des classements et des tableaux de tournois.
+    \item \textbf{Communication intégrée} : Application pour les fans et les équipes avec actualités, photos, vidéos et notifications mobiles.
+    \item \textbf{Gestion des inscriptions} : Inscriptions en ligne pour les compétitions.
+    \item \textbf{Profils d'athlètes} : Statistiques personnelles pour les athlètes.
+    \item \textbf{Sponsoring} : Outils pour promouvoir les sponsors.
+\end{itemize}
+
+\subsubsection{Points forts}
+\begin{itemize}
+    \item \textbf{Engagement utilisateur} : Forte orientation vers l'engagement des participants et des fans grâce à des fonctionnalités de communication et de suivi en direct.
+    \item \textbf{Automatisation} : Réduction significative de la charge de travail administrative pour les organisateurs grâce à l'automatisation des classements et des plannings.
+    \item \textbf{Flexibilité} : Offre des solutions allant de la plateforme web et mobile standard à des intégrations sur des domaines existants et des applications en marque blanche.
+    \item \textbf{API personnalisées} : Possibilité de connecter des composants modulaires avec d'autres fournisseurs via des solutions API personnalisées.
+\end{itemize}
+
+\subsubsection{Points faibles}
+\begin{itemize}
+    \item \textbf{Focus sur les tournois} : Bien que complet pour les tournois, l'accent est moins mis sur la gestion quotidienne des infrastructures sportives (réservation de terrains, gestion des membres du complexe).
+    \item \textbf{Complexité potentielle} : La richesse des fonctionnalités pourrait rendre l'outil complexe pour les petits complexes avec des besoins plus simples.
+\end{itemize}
+
+\subsection{Gestion Sports}
+
+Gestion Sports est un logiciel de gestion pour les clubs de padel, tennis et pickleball, conçu par un dirigeant de club pour des dirigeants de club. Il propose une solution tout-en-un pour les réservations, les paiements et l'accès aux installations [17].
+
+\subsubsection{Fonctionnalités clés}
+\begin{itemize}
+    \item \textbf{Réservations en ligne} : Système de réservation facile pour les joueurs.
+    \item \textbf{Paiements intégrés} : Gestion des encaissements et des transactions.
+    \item \textbf{Accès autonome} : Système d'accès 24h/24 et 7j/7 sans personnel (GS Access).
+    \item \textbf{Caisse certifiée NF525} : Gestion de bar, restaurant, pro shop (GS Cash).
+    \item \textbf{Application mobile} : Application dédiée pour les joueurs.
+    \item \textbf{Site web intégré} : Création de site web pour le club (GS Vision).
+    \item \textbf{Gestion des tournois} : Onglet spécifique pour gérer les inscriptions aux tournois.
+\end{itemize}
+
+\subsubsection{Points forts}
+\begin{itemize}
+    \item \textbf{Spécialisation} : Fortement adapté aux clubs de padel, tennis et pickleball, avec une compréhension approfondie de leurs besoins spécifiques.
+    \item \textbf{Solution intégrée} : Offre un écosystème complet avec des modules connectés pour la gestion, les paiements, l'accès et la présence en ligne.
+    \item \textbf{Facilité d'utilisation} : Outil intuitif et facile à prendre en main pour les dirigeants et les joueurs.
+    \item \textbf{Support client} : Très bonne réactivité et professionnalisme du support.
+\end{itemize}
+
+\subsubsection{Points faibles}
+\begin{itemize}
+    \item \textbf{Moins de sports couverts} : Principalement axé sur le padel, le tennis et le pickleball, potentiellement moins adapté pour le football et le basketball sans personnalisation.
+    \item \textbf{Fonctionnalités de tournoi moins avancées} : Bien qu'il gère les inscriptions aux tournois, les fonctionnalités d'orchestration et de suivi en direct des tournois semblent moins développées que celles de Competize.
+\end{itemize}
+
+\section{Problématique et solution proposée}
+
+\subsection{Problématique}
+
+Vamos Sport Sfax, un complexe sportif moderne offrant des infrastructures pour le football, le padel, le basketball et le tennis, fait face à un défi majeur : la déconnexion entre la gestion opérationnelle de ses terrains et l'orchestration globale de ses compétitions sportives. La gestion manuelle ou fragmentée des réservations, des équipes, des matchs et des tournois entraîne des inefficacités, une perte de temps administrative et une expérience utilisateur sous-optimale. Il existe un besoin clair pour une solution intégrée qui puisse centraliser ces processus, améliorer la fidélisation des utilisateurs et dynamiser la communauté sportive.
+
+\subsection{Solution proposée}
+
+La solution proposée est l'application Vamos Sport, développée par 21C Digital. Cette application vise à fournir une plateforme numérique complète pour la gestion du complexe sportif, en intégrant toutes les fonctionnalités nécessaires pour une gestion fluide et une expérience utilisateur enrichie.
+
+\subsubsection{Fonctionnalités clés}
+
+L'application Vamos Sport offrira les fonctionnalités clés suivantes :
+\begin{itemize}
+    \item \textbf{Gestion centralisée des terrains} : Permettant la réservation en ligne et la planification des terrains pour toutes les disciplines (football, padel, basketball, tennis).
+    \item \textbf{Gestion complète des tournois et ligues} : De la création à la gestion des inscriptions, la planification des matchs, le suivi des scores en direct et la génération de tableaux et classements.
+    \item \textbf{Gestion des équipes et des joueurs} : Facilite la création d'équipes, l'inscription des joueurs et la gestion des rôles (capitaines, joueurs).
+    \item \textbf{Communication et engagement communautaire} : Outils pour informer les utilisateurs des événements, des matchs et des résultats, favorisant ainsi la fidélisation.
+    \item \textbf{Statistiques détaillées} : Fourniture de données et d'analyses sur les performances des joueurs et des équipes, ainsi que sur l'utilisation des installations.
+    \item \textbf{Interface utilisateur intuitive} : Une expérience utilisateur fluide et agréable pour les administrateurs, les capitaines et les joueurs.
+\end{itemize}
+
+\section{Conclusion}
+
+Ce chapitre a posé les bases du projet Vamos Sport en définissant son contexte, ses acteurs principaux et les défis à relever. L'analyse des solutions existantes comme Competize et Gestion Sports a permis de dégager les forces et faiblesses du marché, soulignant la nécessité d'une solution intégrée et polyvalente. L'application Vamos Sport, développée par 21C Digital, se positionne comme une réponse complète à la problématique identifiée, en proposant une gestion optimisée des infrastructures sportives et une dynamisation de la communauté à travers des fonctionnalités innovantes de gestion de tournois et de communication. Les chapitres suivants détailleront la conception et la mise en œuvre technique de cette solution.
+
+\begin{thebibliography}{99}
+
+\bibitem[1]{admincaptaincontroller}
+AdminCaptainController.java, \url{/home/ubuntu/vamoss/backend/src/main/java/com/example/demo/controllers/AdminCaptainController.java}
+
+\bibitem[2]{admincontroller}
+AdminController.java, \url{/home/ubuntu/vamoss/backend/src/main/java/com/example/demo/controllers/AdminController.java}
+
+\bibitem[3]{adminplayercontroller}
+AdminPlayerController.java, \url{/home/ubuntu/vamoss/backend/src/main/java/com/example/demo/controllers/AdminPlayerController.java}
+
+\bibitem[4]{adminteamcontroller}
+AdminTeamController.java, \url{/home/ubuntu/vamoss/backend/src/main/java/com/example/demo/controllers/AdminTeamController.java}
+
+\bibitem[5]{authcontroller}
+AuthController.java, \url{/home/ubuntu/vamoss/backend/src/main/java/com/example/demo/controllers/AuthController.java}
+
+\bibitem[6]{captainapplicationcontroller}
+CaptainApplicationController.java, \url{/home/ubuntu/vamoss/backend/src/main/java/com/example/demo/controllers/CaptainApplicationController.java}
+
+\bibitem[7]{captaincontroller}
+CaptainController.java, \url{/home/ubuntu/vamoss/backend/src/main/java/com/example/demo/controllers/CaptainController.java}
+
+\bibitem[8]{fieldcontroller}
+FieldController.java, \url{/home/ubuntu/vamoss/backend/src/main/java/com/example/demo/controllers/FieldController.java}
+
+\bibitem[9]{matchcontroller}
+MatchController.java, \url{/home/ubuntu/vamoss/backend/src/main/java/com/example/demo/controllers/MatchController.java}
+
+\bibitem[10]{playerapplicationcontroller}
+PlayerApplicationController.java, \url{/home/ubuntu/vamoss/backend/src/main/java/com/example/demo/controllers/PlayerApplicationController.java}
+
+\bibitem[11]{playercontroller}
+PlayerController.java, \url{/home/ubuntu/vamoss/backend/src/main/java/com/example/demo/controllers/PlayerController.java}
+
+\bibitem[12]{sportcontroller}
+SportController.java, \url{/home/ubuntu/vamoss/backend/src/main/java/com/example/demo/controllers/SportController.java}
+
+\bibitem[13]{statscontroller}
+StatsController.java, \url{/home/ubuntu/vamoss/backend/src/main/java/com/example/demo/controllers/StatsController.java}
+
+\bibitem[14]{teammanagementcontroller}
+TeamManagementController.java, \url{/home/ubuntu/vamoss/backend/src/main/java/com/example/demo/controllers/TeamManagementController.java}
+
+\bibitem[15]{tournamentcontroller}
+TournamentController.java, \url{/home/ubuntu/vamoss/backend/src/main/java/com/example/demo/controllers/TournamentController.java}
+
+\bibitem[16]{competize}
+Competize: Sports Tournament & League Software, \url{https://www.competize.com/en/}
+
+\bibitem[17]{gestionsports}
+Gestion Sports: Logiciel padel, tennis, pickleball Premium, \url{https://gestion-sports.fr/}
+
+\end{thebibliography}
+
+\end{document}
