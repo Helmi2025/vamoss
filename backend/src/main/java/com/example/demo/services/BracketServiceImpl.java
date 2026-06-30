@@ -461,7 +461,7 @@ public class BracketServiceImpl implements BracketService {
         if (match1.getNextMatchId() != null) {
             TournamentMatch nextMatch1 = tournamentMatchRepository.findById(match1.getNextMatchId())
                     .orElseThrow(() -> new ResourceNotFoundException("Next match not found"));
-            if (nextMatch1.getScheduledDate() != null || nextMatch1.getStatus() == MatchStatus.SCHEDULED) {
+            if (nextMatch1.getScheduledDate() != null) {
                 throw new BusinessException("Cannot swap participants when downstream matches have been scheduled");
             }
         }
@@ -469,7 +469,7 @@ public class BracketServiceImpl implements BracketService {
         if (match2.getNextMatchId() != null) {
             TournamentMatch nextMatch2 = tournamentMatchRepository.findById(match2.getNextMatchId())
                     .orElseThrow(() -> new ResourceNotFoundException("Next match not found"));
-            if (nextMatch2.getScheduledDate() != null || nextMatch2.getStatus() == MatchStatus.SCHEDULED) {
+            if (nextMatch2.getScheduledDate() != null) {
                 throw new BusinessException("Cannot swap participants when downstream matches have been scheduled");
             }
         }
